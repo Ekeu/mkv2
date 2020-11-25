@@ -10,6 +10,9 @@ node_modules/
 # testing
 /coverage
 
+#files
+src/assets/styles/main.css
+
 # production
 /build
 
