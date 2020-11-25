@@ -12,6 +12,7 @@ node_modules/
 
 #files
 src/assets/styles/main.css
+src\assets\styles\main.css
 
 # production
 /build
