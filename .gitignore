@@ -11,8 +11,7 @@ node_modules/
 /coverage
 
 #files
-src/assets/styles/main.css
-src\assets\styles\main.css
+mk_traiteur/src/assets/styles/main.css
 
 # production
 /build
