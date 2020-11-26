@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
   purge: [],
   darkMode: false,
@@ -15,14 +17,35 @@ module.exports = {
         hind: ['Hind', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
       },
-      width: {
-        w_lg: '48vw',
-        w_sm: '71vw',
+      spacing: {
+        '2/3': '66.666667%',
+        '5/6': '83.333333%',
       },
+    },
+    minHeight: {
+      '366': '366px',
+    },
+    minWidth: {
+      'inherit': 'inherit'
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-pseudo-elements'),
+    require('tailwindcss-aspect-ratio'),
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.empty-content': {
+          content: "''",
+        },
+        '.display-table': {
+          display: "table"
+        }
+      },
+      ['before']
+      );
+    }),
+  ],
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from '../../assets/images/logo.png'
+import { Link } from "react-router-dom";
 
 {
   /*     Mobile menu, show/hide based on mobile menu state.
@@ -18,14 +19,14 @@ const Header = () => {
         <div class='relative z-10 shadow'>
           <div class='max-w-7xl mx-auto flex justify-between items-center px-4 py-5 sm:px-6 sm:py-4 lg:px-8 md:justify-start md:space-x-10'>
             <div>
-              <a href='/' class='flex'>
+              <Link to='/' class='flex'>
                 <span class='sr-only'>MK Traiteur</span>
                 <img
                   class='h-8 w-auto sm:h-10'
                   src={Logo}
                   alt='MK'
                 />
-              </a>
+              </Link>
             </div>
             <div class='-mr-2 -my-2 md:hidden'>
               <button
@@ -52,8 +53,8 @@ const Header = () => {
             </div>
             <div class='hidden md:flex-1 md:flex md:items-center md:justify-between ml-auto'>
               <div class='flex items-center md:ml-auto'>
-                <a
-                  href='/cart'
+                <Link
+                  to='/cart'
                   class='text-xs tracking-wider font-semibold leading-6 mt-1 font-hind uppercase flex text-mk_black'
                 >
                 <svg
@@ -71,13 +72,13 @@ const Header = () => {
                   />
                 </svg>
                   Panier
-                </a>
-                <a
-                  href='/signin'
+                </Link>
+                <Link
+                  to='/signin'
                   class='ml-8 inline-flex items-center justify-center px-4 py-2 border border-transparent rounded shadow text-xs tracking-wider font-semibold text-white uppercase bg-yellow-400 hover:bg-yellow-500'
                 >
                   Connexion
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -120,17 +121,17 @@ const Header = () => {
             </div>
             <div class='py-6 px-5'>
               <div class='mt-6'>
-                <a
-                  href='/signup'
+                <Link
+                  to='/signup'
                   class='w-full flex items-center justify-center px-4 py-3 border border-transparent rounded shadow text-xs tracking-wider font-semibold text-white uppercase bg-yellow-400 hover:bg-yellow-500'
                 >
                   Inscription
-                </a>
+                </Link>
                 <p class='mt-6 text-center text-base font-medium text-mk_black'>
                   Déjà client? {" "}
-                  <a href='/sigin' class='text-yellow-500 hover:text-yellow-600'>
+                  <Link to='/sigin' class='text-yellow-500 hover:text-yellow-600'>
                     Connexion
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
