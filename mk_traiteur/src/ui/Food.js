@@ -10,7 +10,7 @@ import { currencyFormatter } from '../helper/currency';
 const Food = ({ history, match }) => {
   const [qty, setQty] = useState(1);
   const [ship, setShip] = useState(false);
-  const [complement, setComplement] = useState('');
+  const [topping, setTopping] = useState('');
 
   const dispatch = useDispatch();
   const foodDetails = useSelector((state) => state.foodDetails);
@@ -22,7 +22,7 @@ const Food = ({ history, match }) => {
 
   const addToCartHandler = () => {
     history.push(
-      `/cart/${match.params._id}?qty=${qty}&ship=${ship}&complement=${complement}`
+      `/cart/${match.params._id}?qty=${qty}&ship=${ship}&complement=${topping}`
     );
   };
 
@@ -151,7 +151,7 @@ const Food = ({ history, match }) => {
                       name='complement'
                       autocomplete='complement'
                       class='mt-1 block w-48 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-2'
-                      onChange={(e) => setComplement(e.target.value)}
+                      onChange={(e) => setTopping(e.target.value)}
                     >
                       <option value='default'>Choisir un complément</option>
                       {food.toppings &&
