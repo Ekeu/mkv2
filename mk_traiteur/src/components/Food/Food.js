@@ -1,6 +1,7 @@
 import React from 'react';
 import Rating from '../Rating/Rating';
 import { Link } from 'react-router-dom'
+import { currencyFormatter } from "../../helper/currency";
 
 const Food = ({
   sauce: {
@@ -43,10 +44,7 @@ const Food = ({
               </h4>
             </Link>
             <div class='mt-1 text-poppins'>
-              {new Intl.NumberFormat('fr-FR', {
-                style: 'currency',
-                currency: 'EUR',
-              }).format(price)}
+              {currencyFormatter(price)}
             </div>
             <Rating value={rating} reviews={numReviews} />
           </div>
