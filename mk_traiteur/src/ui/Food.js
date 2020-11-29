@@ -22,7 +22,7 @@ const Food = ({ history, match }) => {
 
   const addToCartHandler = () => {
     history.push(
-      `/cart/${match.params._id}?qty=${qty}&ship=${ship}&complement=${topping}`
+      `/cart/${match.params._id}?qty=${qty}&ship=${ship}&topping=${topping}`
     );
   };
 
