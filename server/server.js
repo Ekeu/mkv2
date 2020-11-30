@@ -5,7 +5,7 @@ const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 
 const foodRoutes = require('./routes/foodRoutes');
-const { error } = require('console');
+const userRoutes = require('./routes/userRoutes');
 
 dotenv.config();
 
@@ -13,11 +13,14 @@ connectDB();
 
 const app = express();
 
+app.use(express.json())
+
 app.get('/', (req, res) => {
   res.send('API is up and running...');
 });
 
 app.use('/api/foods', foodRoutes);
+app.use('/api/users', userRoutes);
 
 
 app.use(notFound)
