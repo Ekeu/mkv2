@@ -1,23 +1,35 @@
-import axios from 'axios'
-import { CART_ADD_FOOD } from './cart.types'
+import axios from 'axios';
+import { CART_ADD_FOOD, CART_REMOVE_FOOD } from './cart.types';
 
-export const addToCart = (_id, qty, topping, ship) => async (dispatch, getState) => {
-    const {data} = await axios.get(`/api/foods/${_id}`)
+export const addToCart = (_id, qty, topping, ship) => async (
+  dispatch,
+  getState
+) => {
+  const { data } = await axios.get(`/api/foods/${_id}`);
 
-    dispatch( {
-        type: CART_ADD_FOOD,
-        payload: {
-            _id: data._id,
-            name: data.name,
-            imageUrl: data.imageUrl,
-            price: data.price,
-            availability: data.availability,
-            toppings: data.toppings,
-            qty,
-            topping,
-            ship
-        }
-    })
+  dispatch({
+    type: CART_ADD_FOOD,
+    payload: {
+      _id: data._id,
+      name: data.name,
+      imageUrl: data.imageUrl,
+      price: data.price,
+      availability: data.availability,
+      toppings: data.toppings,
+      qty,
+      topping,
+      ship,
+    },
+  });
 
-    localStorage.setItem('cartFoods', JSON.stringify(getState().cart.cartFoods))
-}
+  localStorage.setItem('cartFoods', JSON.stringify(getState().cart.cartFoods));
+};
+
+export const removeFromCart = (_id) => (dispatch, getState) => {
+  dispatch({
+    type: CART_REMOVE_FOOD,
+    payload: _id,
+  });
+
+  localStorage.setItem('cartFoods', JSON.stringify(getState().cart.cartFoods));
+};

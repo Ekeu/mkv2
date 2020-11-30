@@ -1,4 +1,4 @@
-import { CART_ADD_FOOD } from './cart.types';
+import { CART_ADD_FOOD, CART_REMOVE_FOOD } from './cart.types';
 
 export const cartReducer = (state = { cartFoods: [] }, action) => {
   switch (action.type) {
@@ -21,6 +21,11 @@ export const cartReducer = (state = { cartFoods: [] }, action) => {
           ...state,
           cartFoods: [...state.cartFoods, payload],
         };
+      }
+    case CART_REMOVE_FOOD:
+      return {
+        ...state,
+        cartFoods: state.cartFoods.filter(food => food._id !== action.payload)
       }
     default:
       return state;
