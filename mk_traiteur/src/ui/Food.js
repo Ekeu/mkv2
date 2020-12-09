@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 import { listFoodDetails } from '../redux/reducers/food/food.actions';
 import Loader from '../components/Loader/Loader';
 import Message from '../components/Message/Message';
+import Button from '../components/Button/Button';
 import { currencyFormatter } from '../helper/currency';
 
 const Food = ({ history, match }) => {
   const [qty, setQty] = useState(1);
-  const [ship, setShip] = useState(false);
+  const [ship, setShip] = useState('non');
   const [topping, setTopping] = useState('');
 
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const Food = ({ history, match }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message>{error}</Message>
+        <Message variant='danger'>{error}</Message>
       ) : (
         <div class='max-w-7xl my-0 mx-auto'>
           <div class='lg:mx-auto lg:max-w-full lg:py-0 lg:px-16 lg:relative lg:w-full'>
@@ -153,7 +154,7 @@ const Food = ({ history, match }) => {
                       class='mt-1 block w-48 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-2'
                       onChange={(e) => setTopping(e.target.value)}
                     >
-                      <option value='default'>Choisir un complément</option>
+                      <option value='default'>Complément</option>
                       {food.toppings &&
                         food.toppings.map((topping, idx) => (
                           <option key={idx} value={topping}>
@@ -176,19 +177,19 @@ const Food = ({ history, match }) => {
                       class='mt-1 block w-48 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-2'
                       onChange={(e) => setShip(e.target.value)}
                     >
-                      <option value={false}>Non</option>
-                      <option value={true}>Oui</option>
+                      <option value='non'>Non</option>
+                      <option value='oui'>Oui</option>
                     </select>
                   </div>
                 </div>
-                <button
+                <Button
                   disabled={!food.availability}
-                  type='button'
                   onClick={addToCartHandler}
-                  class='inline-flex w-48 mt-10 justify-center py-3 px-6 border border-transparent shadow-sm text-base tracking-widest font-hind font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600'
+                  type='button'
+                  styles='inline-flex w-48 mt-10 py-3 px-6 text-base bg-yellow-600 hover:bg-yellow-700'
                 >
-                  AJOUTER
-                </button>
+                  Ajouter
+                </Button>
               </div>
             </section>
           </div>

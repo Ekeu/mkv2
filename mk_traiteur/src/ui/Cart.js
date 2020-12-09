@@ -13,7 +13,7 @@ const Cart = ({ match, location, history }) => {
   const foodId = match.params._id;
   const qty = Number(parsed.qty);
   const topping = parsed.topping;
-  const ship = parsed.ship === 'true';
+  const ship = parsed.ship;
 
   const dispatch = useDispatch();
 
@@ -21,7 +21,9 @@ const Cart = ({ match, location, history }) => {
 
   const { cartFoods } = cart;
 
-  const ifShip = cartFoods.find((food) => food.ship === true);
+  const ifShip = cartFoods.find((food) => food.ship === 'oui');
+
+  console.log('Ship: ', ifShip)
 
   useEffect(() => {
     if (foodId) {
@@ -170,8 +172,8 @@ const Cart = ({ match, location, history }) => {
                                 );
                               }}
                             >
-                              <option value='true'>Oui</option>
-                              <option value='false'>Non</option>
+                              <option value='oui'>Oui</option>
+                              <option value='non'>Non</option>
                             </select>
                           </td>
                           <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500 md:px-12'>

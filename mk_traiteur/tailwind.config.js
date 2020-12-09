@@ -35,6 +35,7 @@ module.exports = {
   plugins: [
     require('tailwindcss-pseudo-elements'),
     require('tailwindcss-aspect-ratio'),
+    require('@tailwindcss/forms'),
     plugin(function ({ addUtilities }) {
       addUtilities({
         '.empty-content': {

@@ -1,12 +1,27 @@
 import React from 'react';
 
-const Message = ({children}) => {
+const Message = ({ children, variant, classes }) => {
+  const styles = {};
+  if (variant === 'danger') {
+    styles.container = 'bg-red-50';
+    styles.svg = 'text-red-400'
+    styles.h3 = 'text-red-800'
+    styles.p = 'text-red-700'
+  }
+  if (variant === 'success') {
+    styles.container = 'bg-green-50';
+    styles.svg = 'text-green-400'
+    styles.h3 = 'text-green-800'
+    styles.p = 'text-green-700'
+  }
+
+
   return (
-    <div class='rounded-md bg-red-50 p-4'>
+    <div class={['rounded-md p-4', styles.container, classes].join(' ')}>
       <div class='flex'>
         <div class='flex-shrink-0'>
           <svg
-            class='h-5 w-5 text-red-400'
+            class={['h-5 w-5', styles.svg].join(' ')}
             xmlns='http://www.w3.org/2000/svg'
             viewBox='0 0 20 20'
             fill='currentColor'
@@ -20,13 +35,11 @@ const Message = ({children}) => {
           </svg>
         </div>
         <div class='ml-3'>
-          <h3 class='text-sm font-medium text-red-800'>
+          <h3 class={['text-sm font-medium font-hind', styles.h3].join(' ')}>
             Une erreure s'est produite!
           </h3>
-          <div class='mt-2 text-sm text-red-700'>
-            <p>
-              {children}
-            </p>
+          <div class={['mt-2 text-sm font-hind', styles.p].join(' ')}>
+            <p>{children}</p>
           </div>
         </div>
       </div>
