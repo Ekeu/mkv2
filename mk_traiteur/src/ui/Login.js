@@ -49,7 +49,7 @@ const Login = ({ location, history }) => {
           </Link>
         </p>
       </div>
-      {error && <Message variant='danger' classes='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>{error}</Message>}
+      {error && <Message variant='danger' classes='mt-8 sm:mx-auto sm:w-full sm:max-w-md' headline="Une érreure s'est produite">{error}</Message>}
       {loading && <Loader />}
       <div class='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
         <div class='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
@@ -59,6 +59,7 @@ const Login = ({ location, history }) => {
               placeholder='Adresse e-mail'
               type='email'
               value={email}
+              required
               onChange={(e) => setEmail(e.target.value)}
             >
               Adresse E-mail
@@ -68,6 +69,7 @@ const Login = ({ location, history }) => {
               placeholder='Mot de passe'
               type='password'
               value={password}
+              required
               onChange={(e) => setPassword(e.target.value)}
             >
               Mot de passe

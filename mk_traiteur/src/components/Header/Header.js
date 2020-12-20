@@ -25,7 +25,9 @@ const Header = () => {
         <div className='relative h-16 flex justify-between'>
           <div className='relative z-10 px-2 flex lg:px-0'>
             <div className='flex-shrink-0 flex items-center'>
-              <img className='block h-8 w-auto' src={Logo} alt='Workflow' />
+              <Link to='/'>
+                <img className='block h-8 w-auto' src={Logo} alt='Workflow' />
+              </Link>
             </div>
           </div>
           <Search />
@@ -69,9 +71,8 @@ const Header = () => {
             </Button>
           </div>
           <div className='hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center'>
-            <button className='flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500'>
+            <Link to='/cart' className='flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500'>
               <span className='sr-only'>Cart</span>
-              {/* <!-- Heroicon name: bell --> */}
               <svg
                 className='h-6 w-6'
                 xmlns='http://www.w3.org/2000/svg'
@@ -86,7 +87,7 @@ const Header = () => {
                   d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
                 />
               </svg>
-            </button>
+            </Link>
             {userInfo ? (
               <div className='flex-shrink-0 relative ml-4'>
                 <div>

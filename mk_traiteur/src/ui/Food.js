@@ -42,7 +42,7 @@ const Food = ({ history, match }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message headline="Une érreure s'est produite" variant='danger'>{error}</Message>
       ) : (
         <div class='max-w-7xl my-0 mx-auto'>
           <div class='lg:mx-auto lg:max-w-full lg:py-0 lg:px-16 lg:relative lg:w-full'>

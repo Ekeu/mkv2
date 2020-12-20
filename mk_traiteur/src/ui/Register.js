@@ -59,6 +59,7 @@ const Register = ({ location, history }) => {
       {message && (
         <Message
           variant='danger'
+          headline="Une érreure s'est produite"
           classes='mt-8 sm:mx-auto sm:w-full sm:max-w-md'
         >
           {message}
@@ -67,6 +68,7 @@ const Register = ({ location, history }) => {
       {error && (
         <Message
           variant='danger'
+          headline="Une érreure s'est produite"
           classes='mt-8 sm:mx-auto sm:w-full sm:max-w-md'
         >
           {error}
@@ -81,6 +83,7 @@ const Register = ({ location, history }) => {
               placeholder='Moutapenda Didier'
               type='text'
               value={name}
+              required
               onChange={(e) => setName(e.target.value)}
             >
               Nom et Prénom
@@ -90,6 +93,7 @@ const Register = ({ location, history }) => {
               placeholder='Adresse e-mail'
               type='email'
               value={email}
+              required
               onChange={(e) => setEmail(e.target.value)}
             >
               Adresse E-mail
@@ -99,6 +103,7 @@ const Register = ({ location, history }) => {
               placeholder='Mot de passe'
               type='password'
               value={password}
+              required
               onChange={(e) => setPassword(e.target.value)}
             >
               Mot de passe
@@ -108,6 +113,7 @@ const Register = ({ location, history }) => {
               placeholder='Confirmer mot de passe'
               type='password'
               value={confirmPassword}
+              required
               onChange={(e) => setConfirmPassword(e.target.value)}
             >
               Confirmer mot de passe
