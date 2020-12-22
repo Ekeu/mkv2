@@ -14,9 +14,9 @@ const orderSchema = mongoose.Schema(
         qty: { type: Number, required: true },
         topping: { type: String, required: false },
         additionalInfo: { type: String, required: false },
-        image: { type: String, required: true },
+        imageUrl: { type: String, required: true },
         price: { type: Number, required: true },
-        food: {
+        _id: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
           ref: 'Food',
@@ -44,7 +44,7 @@ const orderSchema = mongoose.Schema(
       required: true,
       default: 0.0,
     },
-    shippigPrice: {
+    shippingPrice: {
       type: Number,
       required: true,
       default: 0.0,

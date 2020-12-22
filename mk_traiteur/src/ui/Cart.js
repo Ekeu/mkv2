@@ -21,8 +21,6 @@ const Cart = ({ match, location, history }) => {
 
   const ifShip = cartFoods.find((food) => food.ship === 'oui');
 
-  console.log('Ship: ', ifShip);
-
   useEffect(() => {
     if (foodId) {
       dispatch(addToCart(foodId, qty, topping, ship));

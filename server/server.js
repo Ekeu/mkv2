@@ -2,10 +2,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const connectDB = require('./config/db');
-const { notFound, errorHandler } = require('./middleware/errorMiddleware')
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const foodRoutes = require('./routes/foodRoutes');
 const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ connectDB();
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('API is up and running...');
@@ -21,9 +22,13 @@ app.get('/', (req, res) => {
 
 app.use('/api/foods', foodRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoutes);
 
+app.get('/api/config/paypal', (req, res) =>
+  res.send(process.env.PAYPAL_CLIENT_ID)
+);
 
-app.use(notFound)
+app.use(notFound);
 
 app.use(errorHandler);
 
