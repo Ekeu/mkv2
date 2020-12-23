@@ -15,4 +15,18 @@ export const FOOTER = [
     link: '/contact',
   },
 ];
-export const CART_HEADERS = ["Plat","Prix","Complément","Quantité","Livraison","Supprimer"]
+export const CART_HEADERS = [
+  'Plat',
+  'Prix',
+  'Complément',
+  'Quantité',
+  'Livraison',
+  'Supprimer',
+];
+export const PROFILE_ORDERS_HEADERS = [
+  'ID',
+  'DATE',
+  'TOTAL',
+  'PAYER',
+  'LIVRER',
+];

@@ -4,7 +4,13 @@ import Loader from '../components/Loader/Loader';
 import FormLabelInput from '../components/Form/FormLabelInput/FormLabelInput';
 import Button from '../components/Button/Button';
 import Message from '../components/Message/Message';
-import { getUserDetails, updateUserProfile } from '../redux/reducers/user/user.actions';
+import {
+  getUserDetails,
+  updateUserProfile,
+} from '../redux/reducers/user/user.actions';
+import { listMyOrders } from '../redux/reducers/order/order.actions';
+import { currencyFormatter } from '../helper/currency';
+import { PROFILE_ORDERS_HEADERS } from '../constants/constants';
 
 const Profile = ({ history }) => {
   const [email, setEmail] = useState('');
@@ -20,9 +26,12 @@ const Profile = ({ history }) => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  
+
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
+
+  const orderListUser = useSelector((state) => state.orderListUser);
+  const { loading: loadingOrders, error: errorOrders, orders } = orderListUser;
 
   useEffect(() => {
     if (!userInfo) {
@@ -30,6 +39,7 @@ const Profile = ({ history }) => {
     } else {
       if (!user || !user.name) {
         dispatch(getUserDetails('profile'));
+        dispatch(listMyOrders());
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -42,13 +52,16 @@ const Profile = ({ history }) => {
     if (password !== confirmPassword) {
       setMessage('Mot de passes pas identiques');
     } else {
-      dispatch(updateUserProfile({id: user._id, name, email, password}))
+      dispatch(updateUserProfile({ id: user._id, name, email, password }));
     }
   };
   return (
     <main class='max-w-7xl mx-auto pb-10 lg:py-12 lg:px-8'>
-      <div class='lg:grid lg:grid-cols-12 lg:gap-x-5'>
-        <div class='space-y-6 sm:px-6 lg:px-0 lg:col-span-9 justify-self-end'>
+      <div
+        style={{ justifyItems: 'baseline' }}
+        class='lg:grid lg:grid-cols-12 lg:gap-x-5'
+      >
+        <div class={`space-y-6 sm:px-6 lg:px-0 ${(orders && orders.length === 0) ? 'lg:col-start-5 lg:-ml-8' : 'lg:col-start-3'} lg:col-span-9`}>
           {message && (
             <Message
               variant='danger'
@@ -168,58 +181,81 @@ const Profile = ({ history }) => {
               </div>
               <div class='mt-6 flex flex-col'>
                 <div class='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
-                  <div class='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-                    <div class='overflow-hidden border-t border-gray-200'>
-                      <table class='min-w-full divide-y divide-gray-200'>
+                  <div class='py-2 align-middle inline-block w-full sm:px-6 lg:px-8'>
+                    <div class='overflow-hidden border-t border-gray-200 w-full'>
+                      <table class='w-full divide-y divide-gray-200'>
                         <thead class='bg-gray-50'>
                           <tr>
-                            <th
-                              scope='col'
-                              class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                            >
-                              Date
-                            </th>
-                            <th
-                              scope='col'
-                              class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                            >
-                              Description
-                            </th>
-                            <th
-                              scope='col'
-                              class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-                            >
-                              Amount
-                            </th>
+                            {PROFILE_ORDERS_HEADERS.map((header, index) => (
+                              <th
+                                key={index}
+                                scope='col'
+                                class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              >
+                                {header}
+                              </th>
+                            ))}
                             <th
                               scope='col'
                               class='relative px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                             >
-                              <span class='sr-only'>View receipt</span>
+                              <span class='sr-only'>Reçu</span>
                             </th>
                           </tr>
                         </thead>
-                        <tbody class='bg-white divide-y divide-gray-200'>
-                          <tr>
-                            <td class='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                              1/1/2020
-                            </td>
-                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                              Business Plan - Annual Billing
-                            </td>
-                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                              CA$109.00
-                            </td>
-                            <td class='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                              <a
-                                href='/'
-                                class='text-orange-600 hover:text-orange-900'
-                              >
-                                View receipt
-                              </a>
-                            </td>
-                          </tr>
-                        </tbody>
+                        {loadingOrders ? (
+                          <Loader />
+                        ) : errorOrders ? (
+                          <Message
+                            headline="Une érreure s'est produite"
+                            variant='danger'
+                          >
+                            {error}
+                          </Message>
+                        ) : (
+                          <tbody class='bg-white divide-y divide-gray-200'>
+                            {orders.map((order) => (
+                              <tr className='uppercase'>
+                                <td class='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                                  {order._id}
+                                </td>
+                                <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                                  {order.createdAt.substring(0, 10)}
+                                </td>
+                                <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                                  {currencyFormatter(order.totalPrice)}
+                                </td>
+                                <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                                  {order.isPaid ? (
+                                    order.paidAt.substring(0, 10)
+                                  ) : (
+                                    <span class='px-2 inline-flex text-xs font-poppins leading-5 font-semibold rounded bg-red-100 text-red-800'>
+                                      Non
+                                    </span>
+                                  )}
+                                </td>
+                                <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                                  {order.isDelivered ? (
+                                    order.deliveredAt.substring(0, 10)
+                                  ) : (
+                                    <span class='px-2 inline-flex text-xs uppercas font-poppins leading-5 font-semibold rounded bg-red-100 text-red-800'>
+                                      Non
+                                    </span>
+                                  )}
+                                </td>
+                                <td class='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                                  <Button
+                                    buttonType='link'
+                                    url={`/order/${order._id}`}
+                                    styles='bg-yellow-600 inline-flex hover:bg-yellow-700'
+                                  >
+                                    Détails
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        )}
                       </table>
                     </div>
                   </div>

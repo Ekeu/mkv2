@@ -12,7 +12,9 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  USER_DETAILS_RESET
 } from './user.types';
+import { ORDER_LIST_USER_RESET } from "../order/order.types";
 const axios = require('axios');
 
 export const login = (email, password) => async (dispatch) => {
@@ -52,6 +54,8 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGOUT });
+  dispatch({ type: USER_DETAILS_RESET });
+  dispatch({ type: ORDER_LIST_USER_RESET });
 };
 
 export const register = (name, email, password) => async (dispatch) => {
