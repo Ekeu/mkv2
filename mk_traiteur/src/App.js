@@ -12,6 +12,8 @@ import Shipping from './ui/Shipping';
 import Payment from './ui/Payment';
 import PlaceOrder from './ui/PlaceOrder';
 import Order from './ui/Order';
+import UserList from './ui/UserList';
+import UserEdit from './ui/UserEdit';
 
 const App = () => {
   return (
@@ -29,6 +31,8 @@ const App = () => {
             <Route path='/profile' component={Profile} />
             <Route path='/food/:_id' component={Food} />
             <Route path='/cart/:_id?' component={Cart} />
+            <Route path='/admin/users' component={UserList} />
+            <Route path='/admin/user/:_id/edit' component={UserEdit} />
             <Route path='/' component={Home} exact />
           </div>
         </main>

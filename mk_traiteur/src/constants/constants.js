@@ -30,3 +30,8 @@ export const PROFILE_ORDERS_HEADERS = [
   'PAYER',
   'LIVRER',
 ];
+export const USER_LIST_HEADERS = [
+  'ID',
+  'NAME',
+  'ADMIN',
+];

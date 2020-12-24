@@ -71,7 +71,10 @@ const Header = () => {
             </Button>
           </div>
           <div className='hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center'>
-            <Link to='/cart' className='flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500'>
+            <Link
+              to='/cart'
+              className='flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500'
+            >
               <span className='sr-only'>Cart</span>
               <svg
                 className='h-6 w-6'
@@ -139,6 +142,32 @@ const Header = () => {
                         Profil
                       </Link>
 
+                      {userInfo && userInfo.isAdmin && (
+                        <>
+                          <Link
+                            to='/admin/users'
+                            className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                            role='menuitem'
+                          >
+                            Utilisateurs
+                          </Link>
+                          <Link
+                            to='/admin/foods'
+                            className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                            role='menuitem'
+                          >
+                            Nourritures
+                          </Link>
+                          <Link
+                            to='/admin/orders'
+                            className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                            role='menuitem'
+                          >
+                            Commandes
+                          </Link>
+                        </>
+                      )}
+
                       <Button
                         type='button'
                         styles='w-full text-left'
@@ -195,8 +224,17 @@ const Header = () => {
 
               <CustomLink to='/cart'>Pannier</CustomLink>
 
+              {userInfo && userInfo.isAdmin && (
+                <>
+                  <CustomLink to='/admin/users'>Utilisateurs</CustomLink>
+                  <CustomLink to='/admin/foods'>Nourritures</CustomLink>
+                  <CustomLink to='/admin/orders'>Commandes</CustomLink>
+                </>
+              )}
+
               <button
                 type='button'
+                onClick={logoutHandler}
                 className='block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 w-full text-left'
               >
                 Déconnexion
