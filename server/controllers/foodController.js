@@ -5,7 +5,13 @@ const Food = require('../models/foodModel');
 // @route GET /api/foods
 // @access Public
 const getFoods = asyncHandler(async (req, res) => {
-  const foods = await Food.find({});
+  const keyword = req.query.keyword ? {
+    name: {
+      $regex: req.query.keyword,
+      $options: 'i'
+    }
+  } : {}
+  const foods = await Food.find({...keyword});
   res.json(foods);
 });
 
@@ -82,10 +88,42 @@ const updateFood = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc New Review
+// @route POST /api/foods/:_id/reviews
+// @access Private
+const createFoodReview = asyncHandler(async (req, res) => {
+  const {rating, comment} = req.body
+  const food = await Food.findById(req.params._id)
+  if(food) {
+    const alreadyReviewed = food.reviews.find(review => review.user.toString() === req.user._id.toString())
+    if (alreadyReviewed) {
+      res.status(400)
+      throw new Error('Food already reviewed')
+    }
+    const review = {
+      name: req.user.name,
+      rating: Number(rating),
+      email: req.user.email,
+      comment,
+      user: req.user._id
+    }
+    food.reviews.push(review)
+    food.numReviews = food.reviews.length
+    food.rating = (food.reviews.reduce((acc, item) => item.rating + acc, 0)/food.reviews.length)
+
+    await food.save()
+    res.status(201).json({message: 'Review added'})
+  }else {
+    res.status(404)
+    throw new Error('La nourriture est introuvable')
+  }
+});
+
 module.exports = {
     getFoods,
     getFoodById,
     deleteFood,
     createFood,
+    createFoodReview,
     updateFood
 }

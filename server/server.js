@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
+const morgan = require('morgan')
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
@@ -18,6 +19,10 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'))
+}
 
 app.get('/', (req, res) => {
   res.send('API is up and running...');

@@ -14,13 +14,16 @@ import {
   FOOD_CREATE_FAIL,
   FOOD_UPDATE_REQUEST,
   FOOD_UPDATE_SUCCESS,
-  FOOD_UPDATE_FAIL
+  FOOD_UPDATE_FAIL,
+  FOOD_CREATE_REVIEW_REQUEST,
+  FOOD_CREATE_REVIEW_SUCCESS,
+  FOOD_CREATE_REVIEW_FAIL,
 } from './food.types';
 
-export const listFoods = () => async (dispatch) => {
+export const listFoods = (keyword='') => async (dispatch) => {
   try {
     dispatch({ type: FOOD_LIST_REQUEST });
-    const { data } = await axios.get('/api/foods');
+    const { data } = await axios.get(`/api/foods?keyword=${keyword}`);
     dispatch({
       type: FOOD_LIST_SUCCESS,
       payload: data,
@@ -142,6 +145,37 @@ export const updateFood = (food) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: FOOD_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const createFoodReview = (foodId, review) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: FOOD_CREATE_REVIEW_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await axios.post(`/api/foods/${foodId}/reviews`, review, config);
+
+    dispatch({
+      type: FOOD_CREATE_REVIEW_SUCCESS
+    });
+  } catch (error) {
+    dispatch({
+      type: FOOD_CREATE_REVIEW_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -16,6 +16,10 @@ import {
   FOOD_UPDATE_SUCCESS,
   FOOD_UPDATE_FAIL,
   FOOD_UPDATE_RESET,
+  FOOD_CREATE_REVIEW_REQUEST,
+  FOOD_CREATE_REVIEW_SUCCESS,
+  FOOD_CREATE_REVIEW_RESET,
+  FOOD_CREATE_REVIEW_FAIL,
 } from './food.types';
 
 export const foodListReducer = (state = { foods: [] }, action) => {
@@ -85,6 +89,21 @@ export const foodUpdateReducer = (state = { food: {}}, action) => {
       return { loading: false, error: action.payload };
     case FOOD_UPDATE_RESET:
       return {food: {}};
+    default:
+      return state;
+  }
+};
+
+export const foodCreateReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case FOOD_CREATE_REVIEW_REQUEST:
+      return { loading: true };
+    case FOOD_CREATE_REVIEW_SUCCESS:
+      return { loading: false, success: true };
+    case FOOD_CREATE_REVIEW_FAIL:
+      return { loading: false, error: action.payload };
+    case FOOD_CREATE_REVIEW_RESET:
+      return {};
     default:
       return state;
   }

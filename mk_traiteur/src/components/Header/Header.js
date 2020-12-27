@@ -6,7 +6,7 @@ import Search from '../Search/Search';
 import Button from '../Button/Button';
 import CustomLink from '../CustomLink/CustomLink';
 import md5 from 'md5';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import { logout } from '../../redux/reducers/user/user.actions';
 
 const Header = () => {
@@ -30,7 +30,7 @@ const Header = () => {
               </Link>
             </div>
           </div>
-          <Search />
+          <Route render={({ history }) => <Search history={history} />} />
           <div className='relative z-10 flex items-center lg:hidden'>
             <Button
               onClick={() => setIsMenu(!isMenu)}

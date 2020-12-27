@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Rating = ({ value, reviews }) => {
+const Rating = ({ value, reviews, styles, inline }) => {
   return (
-    <div class='mt-2 flex items-center'>
+    <div class={['mt-2 flex items-center', styles].join(' ')} style={inline}>
       {[...Array(5)].map((e, i) => {
         return (
           <svg
@@ -15,7 +15,7 @@ const Rating = ({ value, reviews }) => {
           </svg>
         );
       })}
-      <span class='ml-2 text-gray-600 text-sm'> {reviews} reviews</span>
+      {reviews !== null ? <span class='ml-2 text-gray-600 text-sm'> {reviews} reviews</span> : null}
     </div>
   );
 };

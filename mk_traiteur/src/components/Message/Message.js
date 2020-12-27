@@ -68,10 +68,16 @@ const Message = ({ children, variant, classes, headline }) => {
       <div class='flex'>
         <div class='flex-shrink-0'>{styles.svg}</div>
         <div class='ml-3'>
-          <h3 class={['text-sm font-medium font-hind', styles.h3].join(' ')}>
-            {headline}
-          </h3>
-          <div class={['mt-2 text-sm font-hind', styles.p].join(' ')}>
+          {headline && (
+            <h3 class={['text-sm font-medium font-hind', styles.h3].join(' ')}>
+              {headline}
+            </h3>
+          )}
+          <div
+            class={[`${headline && 'mt-2'} text-sm font-hind`, styles.p].join(
+              ' '
+            )}
+          >
             <p>{children}</p>
           </div>
         </div>

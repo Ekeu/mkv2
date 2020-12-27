@@ -5,15 +5,18 @@ import Loader from '../components/Loader/Loader'
 import Message from '../components/Message/Message'
 import { listFoods } from '../redux/reducers/food/food.actions';
 
-const Home = () => {
+const Home = ({match}) => {
+
+  const keyword = match.params.keyword
+
   const dispatch = useDispatch();
 
   const foodList = useSelector((state) => state.foodList);
   const { loading, error, foods } = foodList;
 
   useEffect(() => {
-    dispatch(listFoods());
-  }, [dispatch]);
+    dispatch(listFoods(keyword));
+  }, [dispatch, keyword]);
 
   return (
     <>
