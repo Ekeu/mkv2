@@ -10,10 +10,15 @@ import { currencyFormatter } from '../helper/currency';
 import {
   getOrderDetails,
   payOrder,
+  deliverOrder,
 } from '../redux/reducers/order/order.actions';
-import { ORDER_PAY_RESET } from '../redux/reducers/order/order.types';
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from '../redux/reducers/order/order.types';
+import { loadImage } from '../helper/loadImage';
 
-const Order = ({ match }) => {
+const Order = ({ match, history }) => {
   const dispatch = useDispatch();
   const orderId = match.params._id;
   const [SDKReady, setSDKReady] = useState(false);
@@ -21,6 +26,10 @@ const Order = ({ match }) => {
   const { order, loading, error } = orderDetails;
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   if (!loading) {
     order.foodsPrice = order.orderItems.reduce(
@@ -30,6 +39,9 @@ const Order = ({ match }) => {
   }
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/signin');
+    }
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal');
       const script = document.createElement('script');
@@ -41,8 +53,9 @@ const Order = ({ match }) => {
       };
       document.body.appendChild(script);
     };
-    if (!order || successPay || order._id !== orderId) {
+    if (!order || successPay || order._id !== orderId || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -51,11 +64,14 @@ const Order = ({ match }) => {
         setSDKReady(true);
       }
     }
-  }, [dispatch, order, orderId, successPay]);
+  }, [dispatch, order, orderId, successPay, successDeliver, history, userInfo]);
 
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
+  };
+
+  const deliverHandler = (paymentResult) => {
+    dispatch(deliverOrder(order));
   };
 
   return loading ? (
@@ -66,7 +82,7 @@ const Order = ({ match }) => {
     </Message>
   ) : (
     <main class='py-10 font-hind'>
-      <div class='max-w-3xl mx-auto px-4 sm:px-6 md:items-center md:space-x-5 lg:max-w-full lg:px-8'>
+      <div class='max-w-3xl mx-auto sm:px-6 lg:max-w-7xl'>
         <h2 class='text-3xl tracking-wider uppercase leading-8 font-hind font-extrabold text-gray-900 sm:text-4xl'>
           Commande: <span className='text-yellow-600'>{order._id}</span>
         </h2>
@@ -187,10 +203,7 @@ const Order = ({ match }) => {
                             <div class='flex-shrink-0'>
                               <img
                                 class='h-10 w-10 rounded-md object-cover'
-                                src={
-                                  food.imageUrl &&
-                                  require(`../assets${food.imageUrl}`).default
-                                }
+                                src={loadImage(food.imageUrl)}
                                 alt=''
                               />
                             </div>
@@ -332,6 +345,21 @@ const Order = ({ match }) => {
                 )}
               </div>
             )}
+            {loadingDeliver && <Loader />}
+            {userInfo &&
+              userInfo.isAdmin &&
+              order.isPaid &&
+              !order.isDelivered && (
+                <div class='mt-6 flex flex-col justify-stretch'>
+                  <Button
+                    type='submit'
+                    styles='bg-yellow-600 inline-flex hover:bg-yellow-700'
+                    onClick={deliverHandler}
+                  >
+                    Commande Livrée
+                  </Button>
+                </div>
+              )}
           </div>
         </section>
       </div>

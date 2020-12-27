@@ -32,6 +32,21 @@ export const PROFILE_ORDERS_HEADERS = [
 ];
 export const USER_LIST_HEADERS = [
   'ID',
-  'NAME',
+  'NOM',
   'ADMIN',
+];
+export const ORDER_LIST_HEADERS = [
+  'ID',
+  'CLIENT',
+  'DATE',
+  'TOTAL',
+  'PAYER',
+  'LIVRER',
+];
+export const FOOD_LIST_HEADERS = [
+  'ID',
+  'NOM',
+  'PRIX',
+  'CATEGORY',
+  'ORIGINE',
 ];

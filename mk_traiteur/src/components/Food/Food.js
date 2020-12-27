@@ -2,6 +2,7 @@ import React from 'react';
 import Rating from '../Rating/Rating';
 import { Link } from 'react-router-dom'
 import { currencyFormatter } from "../../helper/currency";
+import { loadImage } from '../../helper/loadImage';
 
 const Food = ({
   sauce: {
@@ -15,6 +16,7 @@ const Food = ({
     numReviews,
   },
 }) => {
+  
   return (
     <div class='space-y-4'>
       <div>
@@ -22,7 +24,7 @@ const Food = ({
           <Link to={`/food/${_id}`}>
             <img
               class='h-full w-full object-cover absolute rounded-lg shadow-md'
-              src={require(`../../assets${imageUrl}`).default}
+              src={loadImage(imageUrl)}
               alt={name}
             />
           </Link>

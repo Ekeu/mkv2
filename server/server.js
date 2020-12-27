@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
@@ -7,6 +8,8 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const foodRoutes = require('./routes/foodRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
+
 
 dotenv.config();
 
@@ -23,10 +26,14 @@ app.get('/', (req, res) => {
 app.use('/api/foods', foodRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/api/config/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
+
+const folder = path.resolve()
+app.use('/uploads', express.static(path.join(folder, '/uploads')))
 
 app.use(notFound);
 

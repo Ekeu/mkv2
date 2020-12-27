@@ -14,6 +14,9 @@ import PlaceOrder from './ui/PlaceOrder';
 import Order from './ui/Order';
 import UserList from './ui/UserList';
 import UserEdit from './ui/UserEdit';
+import FoodList from './ui/FoodList';
+import FoodEdit from './ui/FoodEdit';
+import OrderList from './ui/OrderList';
 
 const App = () => {
   return (
@@ -33,6 +36,9 @@ const App = () => {
             <Route path='/cart/:_id?' component={Cart} />
             <Route path='/admin/users' component={UserList} />
             <Route path='/admin/user/:_id/edit' component={UserEdit} />
+            <Route path='/admin/foods' component={FoodList} />
+            <Route path='/admin/food/:_id/edit' component={FoodEdit} />
+            <Route path='/admin/orders' component={OrderList} />
             <Route path='/' component={Home} exact />
           </div>
         </main>

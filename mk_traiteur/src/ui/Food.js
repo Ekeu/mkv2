@@ -7,6 +7,7 @@ import Loader from '../components/Loader/Loader';
 import Message from '../components/Message/Message';
 import Button from '../components/Button/Button';
 import { currencyFormatter } from '../helper/currency';
+import { loadImage } from '../helper/loadImage';
 
 const Food = ({ history, match }) => {
   const [qty, setQty] = useState(1);
@@ -42,7 +43,9 @@ const Food = ({ history, match }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message headline="Une érreure s'est produite" variant='danger'>{error}</Message>
+        <Message headline="Une érreure s'est produite" variant='danger'>
+          {error}
+        </Message>
       ) : (
         <div class='max-w-7xl my-0 mx-auto'>
           <div class='lg:mx-auto lg:max-w-full lg:py-0 lg:px-16 lg:relative lg:w-full'>
@@ -59,10 +62,7 @@ const Food = ({ history, match }) => {
                 <div class='w-full max-w-sm relative m-auto bg-white rounded-lg shadow-sm md:max-w-md md:max-h-96 pb-96'>
                   <img
                     class='w-full h-full m-auto left-0 right-0 top-0 bottom-0 absolute object-cover rounded-lg'
-                    src={
-                      food.imageUrl &&
-                      require(`../assets${food.imageUrl}`).default
-                    }
+                    src={food.imageUrl && loadImage(food.imageUrl)}
                     alt={food.name}
                   />
                 </div>

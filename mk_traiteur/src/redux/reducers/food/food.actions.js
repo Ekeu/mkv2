@@ -6,6 +6,15 @@ import {
   FOOD_DETAILS_REQUEST,
   FOOD_DETAILS_SUCCESS,
   FOOD_DETAILS_FAIL,
+  FOOD_DELETE_REQUEST,
+  FOOD_DELETE_SUCCESS,
+  FOOD_DELETE_FAIL,
+  FOOD_CREATE_REQUEST,
+  FOOD_CREATE_SUCCESS,
+  FOOD_CREATE_FAIL,
+  FOOD_UPDATE_REQUEST,
+  FOOD_UPDATE_SUCCESS,
+  FOOD_UPDATE_FAIL
 } from './food.types';
 
 export const listFoods = () => async (dispatch) => {
@@ -28,20 +37,115 @@ export const listFoods = () => async (dispatch) => {
 };
 
 export const listFoodDetails = (id) => async (dispatch) => {
-    try {
-      dispatch({ type: FOOD_DETAILS_REQUEST });
-      const { data } = await axios.get(`/api/foods/${id}`);
-      dispatch({
-        type: FOOD_DETAILS_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: FOOD_DETAILS_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+  try {
+    dispatch({ type: FOOD_DETAILS_REQUEST });
+    const { data } = await axios.get(`/api/foods/${id}`);
+    dispatch({
+      type: FOOD_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FOOD_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteFood = (_id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: FOOD_DELETE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/foods/${_id}`, config);
+
+    dispatch({
+      type: FOOD_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: FOOD_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const createFood = (_id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: FOOD_CREATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`/api/foods`, {}, config);
+
+    dispatch({
+      type: FOOD_CREATE_SUCCESS,
+      payload: data
+    });
+  } catch (error) {
+    dispatch({
+      type: FOOD_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateFood = (food) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: FOOD_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put(`/api/foods/${food._id}`, food, config);
+
+    dispatch({
+      type: FOOD_UPDATE_SUCCESS,
+      payload: data
+    });
+  } catch (error) {
+    dispatch({
+      type: FOOD_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

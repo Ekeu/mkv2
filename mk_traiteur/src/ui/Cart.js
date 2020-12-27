@@ -5,6 +5,7 @@ import Modal from '../components/Modal/Modal';
 import { addToCart, removeFromCart } from '../redux/reducers/cart/cart.actions';
 import { CART_HEADERS } from '../constants/constants';
 import { currencyFormatter } from '../helper/currency';
+import { loadImage } from '../helper/loadImage';
 
 const Cart = ({ match, location, history }) => {
   const parsed = queryString.parse(location.search);
@@ -145,10 +146,7 @@ const Cart = ({ match, location, history }) => {
                                 <div class='flex-shrink-0 h-10 w-10'>
                                   <img
                                     class='h-10 w-10 rounded-md object-cover shadow-md'
-                                    src={
-                                      require(`../assets${food.imageUrl}`)
-                                        .default
-                                    }
+                                    src={loadImage(food.imageUrl)}
                                     alt=''
                                   />
                                 </div>

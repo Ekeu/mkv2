@@ -61,7 +61,13 @@ const Profile = ({ history }) => {
         style={{ justifyItems: 'baseline' }}
         class='lg:grid lg:grid-cols-12 lg:gap-x-5'
       >
-        <div class={`space-y-6 sm:px-6 lg:px-0 ${(orders && orders.length === 0) ? 'lg:col-start-5 lg:-ml-8' : 'lg:col-start-3'} lg:col-span-9`}>
+        <div
+          class={`space-y-6 sm:px-6 lg:px-0 ${
+            orders && orders.length === 0
+              ? 'lg:col-start-5 lg:-ml-8'
+              : 'lg:col-start-3'
+          } lg:col-span-9`}
+        >
           {message && (
             <Message
               variant='danger'
@@ -235,11 +241,17 @@ const Profile = ({ history }) => {
                                   )}
                                 </td>
                                 <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                                  {order.isDelivered ? (
-                                    order.deliveredAt.substring(0, 10)
+                                  {order.shouldShip ? (
+                                    order.isDelivered ? (
+                                      order.deliveredAt.substring(0, 10)
+                                    ) : (
+                                      <span class='px-2 inline-flex text-xs uppercase font-poppins leading-5 font-semibold rounded bg-red-100 text-red-800'>
+                                        Non
+                                      </span>
+                                    )
                                   ) : (
-                                    <span class='px-2 inline-flex text-xs uppercas font-poppins leading-5 font-semibold rounded bg-red-100 text-red-800'>
-                                      Non
+                                    <span class='px-2 inline-flex text-xs uppercase font-poppins leading-5 font-semibold'>
+                                      -
                                     </span>
                                   )}
                                 </td>
