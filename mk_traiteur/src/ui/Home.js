@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import Food from '../components/Food/Food';
 import FoodCarousel from '../components/FoodCarousel/FoodCarousel';
 import Meta from '../components/Meta/Meta';

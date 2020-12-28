@@ -24,10 +24,6 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-app.get('/', (req, res) => {
-  res.send('API is up and running...');
-});
-
 app.use('/api/foods', foodRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
@@ -39,6 +35,16 @@ app.get('/api/config/paypal', (req, res) =>
 
 const folder = path.resolve()
 app.use('/uploads', express.static(path.join(folder, '/uploads')))
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(folder, '/mk_traiteur/build')))
+
+  app.get('*', (req,res) => res.sendFile(path.resolve(folder, 'mk_traiteur', 'build', 'index.html')))
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is up and running...');
+  });
+}
 
 app.use(notFound);
 
