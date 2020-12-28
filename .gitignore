@@ -15,6 +15,7 @@ mk_traiteur/src/assets/styles/main.css
 
 # production
 /build
+mk_traiteur/build
 
 # misc
 .DS_Store
