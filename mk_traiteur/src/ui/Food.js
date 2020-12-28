@@ -14,6 +14,7 @@ import { loadImage } from '../helper/loadImage';
 import md5 from 'md5';
 import { FOOD_CREATE_REVIEW_RESET } from '../redux/reducers/food/food.types';
 import { dateFormat } from '../helper/moment';
+import Meta from '../components/Meta/Meta';
 
 const Food = ({ history, match }) => {
   const [qty, setQty] = useState(1);
@@ -78,6 +79,7 @@ const Food = ({ history, match }) => {
         </Message>
       ) : (
         <>
+          <Meta title={`MK Traiteur | ${food.name}`} />
           <div class='max-w-7xl my-0 mx-auto grid'>
             <div class='lg:mx-auto lg:max-w-full lg:py-0 lg:px-16 lg:relative lg:w-full'>
               <div class='float-left w-full px-3 md:border-r-8 md:border-solid md:border-gray-100 md:w-3/6 md:pr-12 md:mt-6 md:clear-right md:float-right border-0 md:p-0 md:b-0 md:my-0 md:mr-16 md:ml-0 md:max-w-sm xl:border-0 xl:mr-0 xl:max-w-none xl:ml-0 xl:p-0'>

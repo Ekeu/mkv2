@@ -36,10 +36,17 @@ const App = () => {
             <Route path='/cart/:_id?' component={Cart} />
             <Route path='/admin/users' component={UserList} />
             <Route path='/admin/user/:_id/edit' component={UserEdit} />
-            <Route path='/admin/foods' component={FoodList} />
+            <Route path='/admin/foods' component={FoodList} exact />
+            <Route path='/admin/foods/:pageNumber' component={FoodList} exact />
             <Route path='/admin/food/:_id/edit' component={FoodEdit} />
             <Route path='/admin/orders' component={OrderList} />
             <Route path='/search/:keyword' component={Home} exact />
+            <Route path='/page/:pageNumber' component={Home} exact />
+            <Route
+              path='/search/:keyword/page/:pageNumber'
+              component={Home}
+              exact
+            />
             <Route path='/' component={Home} exact />
           </div>
         </main>

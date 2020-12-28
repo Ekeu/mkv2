@@ -5,14 +5,21 @@ const Food = require('../models/foodModel');
 // @route GET /api/foods
 // @access Public
 const getFoods = asyncHandler(async (req, res) => {
-  const keyword = req.query.keyword ? {
-    name: {
-      $regex: req.query.keyword,
-      $options: 'i'
-    }
-  } : {}
-  const foods = await Food.find({...keyword});
-  res.json(foods);
+  const pageSize = 6;
+  const page = Number(req.query.pageNumber) || 1;
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i',
+        },
+      }
+    : {};
+  const count = await Food.countDocuments({ ...keyword });
+  const foods = await Food.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ foods, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc Fetch single food
@@ -36,8 +43,8 @@ const deleteFood = asyncHandler(async (req, res) => {
   const food = await Food.findById(req.params._id);
 
   if (food) {
-    await food.remove()
-    res.json({message: 'Food removed'})
+    await food.remove();
+    res.json({ message: 'Food removed' });
   } else {
     res.status(404);
     throw new Error("La chop la n'existe pas encore");
@@ -57,34 +64,41 @@ const createFood = asyncHandler(async (req, res) => {
     category: 'Sample category',
     availability: true,
     numReviews: 0,
-    description: 'Sample description'
-  })
+    description: 'Sample description',
+  });
 
-  const createdFood = await food.save()
-  res.status(201).json(createdFood)
+  const createdFood = await food.save();
+  res.status(201).json(createdFood);
 });
 
 // @desc Update Food
 // @route PUT /api/foods/:_id
 // @access Private/admin
 const updateFood = asyncHandler(async (req, res) => {
-  const {name, price, description, image, brand, category, availability} = req.body
-  const food = await Food.findById(req.params._id)
-  if(food) {
-    food.name = name
-    food.price = price
-    food.description = description
-    food.imageUrl = image
-    food.brand = brand
-    food.category = category
-    food.availability = availability
+  const {
+    name,
+    price,
+    description,
+    image,
+    brand,
+    category,
+    availability,
+  } = req.body;
+  const food = await Food.findById(req.params._id);
+  if (food) {
+    food.name = name;
+    food.price = price;
+    food.description = description;
+    food.imageUrl = image;
+    food.brand = brand;
+    food.category = category;
+    food.availability = availability;
 
-    const updatedFood = await food.save()
-    res.status(201).json(updatedFood)
-    
-  }else {
-    res.status(404)
-    throw new Error('La nourriture est introuvable')
+    const updatedFood = await food.save();
+    res.status(201).json(updatedFood);
+  } else {
+    res.status(404);
+    throw new Error('La nourriture est introuvable');
   }
 });
 
@@ -92,38 +106,51 @@ const updateFood = asyncHandler(async (req, res) => {
 // @route POST /api/foods/:_id/reviews
 // @access Private
 const createFoodReview = asyncHandler(async (req, res) => {
-  const {rating, comment} = req.body
-  const food = await Food.findById(req.params._id)
-  if(food) {
-    const alreadyReviewed = food.reviews.find(review => review.user.toString() === req.user._id.toString())
+  const { rating, comment } = req.body;
+  const food = await Food.findById(req.params._id);
+  if (food) {
+    const alreadyReviewed = food.reviews.find(
+      (review) => review.user.toString() === req.user._id.toString()
+    );
     if (alreadyReviewed) {
-      res.status(400)
-      throw new Error('Food already reviewed')
+      res.status(400);
+      throw new Error('Food already reviewed');
     }
     const review = {
       name: req.user.name,
       rating: Number(rating),
       email: req.user.email,
       comment,
-      user: req.user._id
-    }
-    food.reviews.push(review)
-    food.numReviews = food.reviews.length
-    food.rating = (food.reviews.reduce((acc, item) => item.rating + acc, 0)/food.reviews.length)
+      user: req.user._id,
+    };
+    food.reviews.push(review);
+    food.numReviews = food.reviews.length;
+    food.rating =
+      food.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      food.reviews.length;
 
-    await food.save()
-    res.status(201).json({message: 'Review added'})
-  }else {
-    res.status(404)
-    throw new Error('La nourriture est introuvable')
+    await food.save();
+    res.status(201).json({ message: 'Review added' });
+  } else {
+    res.status(404);
+    throw new Error('La nourriture est introuvable');
   }
 });
 
+// @desc Get top rated products
+// @route POST /api/foods/top
+// @access Public
+const getTopProducts = asyncHandler(async (req, res) => {
+  const foods = await Food.find({}).sort({ rating: -1 }).limit(3);
+  res.json(foods);
+});
+
 module.exports = {
-    getFoods,
-    getFoodById,
-    deleteFood,
-    createFood,
-    createFoodReview,
-    updateFood
-}
+  getFoods,
+  getFoodById,
+  deleteFood,
+  createFood,
+  createFoodReview,
+  updateFood,
+  getTopProducts
+};

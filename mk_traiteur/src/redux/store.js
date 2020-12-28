@@ -8,7 +8,8 @@ import {
   foodDeleteReducer,
   foodCreateReducer,
   foodUpdateReducer,
-  foodCreateReviewReducer
+  foodCreateReviewReducer,
+  foodTopRatedReducer
 } from './reducers/food/food.reducers';
 import { cartReducer } from './reducers/cart/cart.reducers';
 import {
@@ -35,6 +36,7 @@ const reducer = combineReducers({
   foodCreate: foodCreateReducer,
   foodUpdate:foodUpdateReducer,
   foodCreateReview: foodCreateReviewReducer,
+  foodTopRated: foodTopRatedReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,

@@ -11,6 +11,7 @@ import {
 import { listMyOrders } from '../redux/reducers/order/order.actions';
 import { currencyFormatter } from '../helper/currency';
 import { PROFILE_ORDERS_HEADERS } from '../constants/constants';
+import { USER_UPDATE_PROFILE_RESET } from '../redux/reducers/user/user.types';
 
 const Profile = ({ history }) => {
   const [email, setEmail] = useState('');
@@ -37,7 +38,8 @@ const Profile = ({ history }) => {
     if (!userInfo) {
       history.push('/signin');
     } else {
-      if (!user || !user.name) {
+      if (!user || !user.name || success) {
+        dispatch({type: USER_UPDATE_PROFILE_RESET})
         dispatch(getUserDetails('profile'));
         dispatch(listMyOrders());
       } else {

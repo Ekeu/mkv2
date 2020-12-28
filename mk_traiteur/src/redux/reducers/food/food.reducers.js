@@ -20,6 +20,9 @@ import {
   FOOD_CREATE_REVIEW_SUCCESS,
   FOOD_CREATE_REVIEW_RESET,
   FOOD_CREATE_REVIEW_FAIL,
+  FOOD_TOP_REQUEST,
+  FOOD_TOP_SUCCESS,
+  FOOD_TOP_FAIL,
 } from './food.types';
 
 export const foodListReducer = (state = { foods: [] }, action) => {
@@ -27,7 +30,12 @@ export const foodListReducer = (state = { foods: [] }, action) => {
     case FOOD_LIST_REQUEST:
       return { loading: true, foods: [] };
     case FOOD_LIST_SUCCESS:
-      return { loading: false, foods: action.payload };
+      return {
+        loading: false,
+        foods: action.payload.foods,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      };
     case FOOD_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -79,7 +87,7 @@ export const foodCreateReducer = (state = {}, action) => {
   }
 };
 
-export const foodUpdateReducer = (state = { food: {}}, action) => {
+export const foodUpdateReducer = (state = { food: {} }, action) => {
   switch (action.type) {
     case FOOD_UPDATE_REQUEST:
       return { loading: true };
@@ -88,7 +96,7 @@ export const foodUpdateReducer = (state = { food: {}}, action) => {
     case FOOD_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case FOOD_UPDATE_RESET:
-      return {food: {}};
+      return { food: {} };
     default:
       return state;
   }
@@ -104,6 +112,19 @@ export const foodCreateReviewReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case FOOD_CREATE_REVIEW_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const foodTopRatedReducer = (state = { foods: [] }, action) => {
+  switch (action.type) {
+    case FOOD_TOP_REQUEST:
+      return { loading: true, foods: [] };
+    case FOOD_TOP_SUCCESS:
+      return { loading: false, foods: action.payload };
+    case FOOD_TOP_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

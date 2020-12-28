@@ -18,12 +18,19 @@ import {
   FOOD_CREATE_REVIEW_REQUEST,
   FOOD_CREATE_REVIEW_SUCCESS,
   FOOD_CREATE_REVIEW_FAIL,
+  FOOD_TOP_REQUEST,
+  FOOD_TOP_SUCCESS,
+  FOOD_TOP_FAIL,
 } from './food.types';
 
-export const listFoods = (keyword='') => async (dispatch) => {
+export const listFoods = (keyword = '', pageNumber = '') => async (
+  dispatch
+) => {
   try {
     dispatch({ type: FOOD_LIST_REQUEST });
-    const { data } = await axios.get(`/api/foods?keyword=${keyword}`);
+    const { data } = await axios.get(
+      `/api/foods?keyword=${keyword}&pageNumber=${pageNumber}`
+    );
     dispatch({
       type: FOOD_LIST_SUCCESS,
       payload: data,
@@ -108,7 +115,7 @@ export const createFood = (_id) => async (dispatch, getState) => {
 
     dispatch({
       type: FOOD_CREATE_SUCCESS,
-      payload: data
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -140,7 +147,7 @@ export const updateFood = (food) => async (dispatch, getState) => {
 
     dispatch({
       type: FOOD_UPDATE_SUCCESS,
-      payload: data
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -153,7 +160,10 @@ export const updateFood = (food) => async (dispatch, getState) => {
   }
 };
 
-export const createFoodReview = (foodId, review) => async (dispatch, getState) => {
+export const createFoodReview = (foodId, review) => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({
       type: FOOD_CREATE_REVIEW_REQUEST,
@@ -171,11 +181,34 @@ export const createFoodReview = (foodId, review) => async (dispatch, getState) =
     await axios.post(`/api/foods/${foodId}/reviews`, review, config);
 
     dispatch({
-      type: FOOD_CREATE_REVIEW_SUCCESS
+      type: FOOD_CREATE_REVIEW_SUCCESS,
     });
   } catch (error) {
     dispatch({
       type: FOOD_CREATE_REVIEW_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listTopFoods = () => async (
+  dispatch
+) => {
+  try {
+    dispatch({ type: FOOD_TOP_REQUEST });
+    const { data } = await axios.get(
+      `/api/foods/top`
+    );
+    dispatch({
+      type: FOOD_TOP_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FOOD_TOP_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

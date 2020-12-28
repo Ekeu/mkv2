@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader/Loader';
 import Button from '../components/Button/Button';
 import Message from '../components/Message/Message';
+import Paginate from '../components/Paginate/Paginate'
 import {
   listFoods,
   deleteFood,
@@ -14,10 +15,12 @@ import { FOOD_CREATE_RESET } from '../redux/reducers/food/food.types';
 import { loadImage } from '../helper/loadImage';
 
 const FoodList = ({ history, match }) => {
+
+  const pageNumber = match.params.pageNumber ||1
   const dispatch = useDispatch();
 
   const foodList = useSelector((state) => state.foodList);
-  const { loading, error, foods } = foodList;
+  const { loading, error, foods, pages, page } = foodList;
 
   const foodDelete = useSelector((state) => state.foodDelete);
   const {
@@ -44,9 +47,9 @@ const FoodList = ({ history, match }) => {
     if (successCreate) {
       history.push(`/admin/food/${createdFood._id}/edit`);
     } else {
-      dispatch(listFoods());
+      dispatch(listFoods('', pageNumber));
     }
-  }, [dispatch, userInfo, history, successDelete, successCreate, createdFood]);
+  }, [dispatch, userInfo, history, successDelete, successCreate, createdFood, pageNumber]);
 
   const deleteHandler = (_id) => {
     if (
@@ -81,6 +84,7 @@ const FoodList = ({ history, match }) => {
           {error}
         </Message>
       ) : (
+        <>
         <div className='max-w-7xl mx-auto overflow-x-auto py-16 px-4 sm:px-6 lg:py-8 lg:px-8'>
           <div class='py-5'>
             <div class='-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap'>
@@ -182,6 +186,8 @@ const FoodList = ({ history, match }) => {
             </div>
           </div>
         </div>
+        <Paginate pages={pages} page={page} isAdmin={true}/>
+        </>
       )}
     </>
   );
